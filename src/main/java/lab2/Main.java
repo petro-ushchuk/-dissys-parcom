@@ -11,8 +11,11 @@ import java.net.URL;
 
 public class Main extends Application {
 
+    public static Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader();
         URL resource = getClass().getResource("/sample.fxml");
         loader.setLocation(resource);
