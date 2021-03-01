@@ -3,115 +3,32 @@ package lab2.service;
 import lab2.controller.ComputerController;
 import lab2.model.Compute;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 public class ThreadBasedComputing {
 
 
-    public static Double calculate(ComputerController computerController, int n) throws InterruptedException {
+    public static double calculate(ComputerController computerController, int n) throws InterruptedException, ExecutionException {
         Compute compute = new Compute(computerController, n);
-        Thread c2 = new Thread(compute::calculateC2);
-        Thread b2 = new Thread(compute::calculateB2);
-        Thread a2 = new Thread(compute::calculateA2);
-        Thread b1 = new Thread(compute::calculateB1);
-        Thread c1 = new Thread(compute::calculateC1);
-        Thread a1 = new Thread(compute::calculateA1);
-        Thread b = new Thread(compute::calculateB);
-        Thread a = new Thread(compute::calculateA);
+        CompletableFuture<double[][]> c2 = CompletableFuture.supplyAsync(compute::calculateC2);
+        CompletableFuture<double[][]> b2 = CompletableFuture.supplyAsync(compute::calculateB2);
+        CompletableFuture<double[][]> a2 = CompletableFuture.supplyAsync(compute::calculateA2);
+        CompletableFuture<double[]> b1 = CompletableFuture.supplyAsync(compute::calculateB1);
+        CompletableFuture<double[]> c1 = CompletableFuture.supplyAsync(compute::calculateC1);
+        CompletableFuture<double[][]> a1 = CompletableFuture.supplyAsync(compute::calculateA1);
+        CompletableFuture<double[]> b = CompletableFuture.supplyAsync(compute::calculateB);
+        CompletableFuture<double[][]> a = CompletableFuture.supplyAsync(compute::calculateA);
 
-        Thread b2plusC2 = new Thread(() -> {
-            try {
-                c2.join();
-                b2.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            compute.B2plus24C2T();
-        });
+        CompletableFuture<double[][]> b2plusC2 = b2.thenCombine(c2, (b2s, c2s) -> compute.B2plus24C2T());
+        CompletableFuture<double[]> b1minusC1 = b1.thenCombine(c1, (b2s, c2s) -> compute.b1Minus24C1());
+        CompletableFuture<double[]> y1 = b.thenCombine(a, (b2s, c2s) -> compute.calculateY1());
+        CompletableFuture<double[]> y2 = a1.thenCombine(b1minusC1, (b2s, c2s) -> compute.calculateY2());
+        CompletableFuture<double[][]> y3 = b2plusC2.thenCombine(a2, (b2s, c2s) -> compute.calculateY3());
+        CompletableFuture<double[]> y2y3plusY1 = y2.thenCombine(y3, (b2s, c2s) -> compute.calculateY2Y3Y3y1PlusY1());
+        CompletableFuture<double[]> y3y1plusY2 = y2.thenCombine(y3, (b2s, c2s) -> compute.calculateY3Y1plusY2());
 
-        Thread y3 = new Thread(() -> {
-            try {
-                b2plusC2.join();
-                a2.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            compute.calculateY3();
-        });
-
-        Thread b1minusC1 = new Thread(() -> {
-            try {
-                b1.join();
-                c1.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            compute.b1Minus24C1();
-        });
-
-        Thread y2 = new Thread(() -> {
-            try {
-                a1.join();
-                b1minusC1.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            compute.calculateY2();
-
-        });
-        Thread y1 = new Thread(() -> {
-            try {
-                b.join();
-                a.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            compute.calculateY1();
-        });
-
-        Thread y2y3plusY1 = new Thread(() -> {
-            try {
-                y1.join();
-                y2.join();
-                y3.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            compute.calculateY2Y3Y3y1PlusY1();
-        });
-
-        Thread y3y1plusY2 = new Thread(() -> {
-            try {
-                y1.join();
-                y2.join();
-                y3.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            compute.calculateY3Y1plusY2();
-        });
-
-        a.start();
-        a1.start();
-        a2.start();
-        b.start();
-        b1.start();
-        b2.start();
-        c1.start();
-        c2.start();
-
-        b2plusC2.start();
-        b1minusC1.start();
-
-        y1.start();
-        y2.start();
-        y3.start();
-
-        y2y3plusY1.start();
-        y3y1plusY2.start();
-
-        y3y1plusY2.join();
-        y2y3plusY1.join();
-
-        return compute.getX();
+        CompletableFuture<Double> x = y2y3plusY1.thenCombine(y3y1plusY2, (b2s, c2s) -> compute.getX());
+        return x.get();
     }
 }

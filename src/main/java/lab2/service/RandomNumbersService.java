@@ -6,64 +6,48 @@ import java.security.SecureRandom;
 
 public class RandomNumbersService {
 
-    public String generateMatrix(TextField textAreaN) {
-        Integer n = getInteger(textAreaN);
-        if (n == null) return "";
-        Double[][] matrix = new Double[n][n];
+    private static SecureRandom rand = new SecureRandom();
+    final String str = System.lineSeparator();
+
+    public String generateMatrix(int n) {
+        double[][] matrix = new double[n][n];
         SecureRandom rand = new SecureRandom();
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
-                matrix[i][j] = (double) rand.nextInt(10);
+                matrix[i][j] = rand.nextInt(10);
             }
 
         }
         return asString(matrix);
     }
 
-    private Integer getInteger(TextField textAreaN) {
-        int n = 0;
-        String textN = textAreaN.getText();
-        if(textN.isEmpty()) {
-            textAreaN.requestFocus();
-            return null;
-        }
-        try{
-            n = Integer.parseInt(textN);
-        }catch (NumberFormatException e){
-            textAreaN.requestFocus();
-            return null;
-        }
-        return n;
-    }
 
-    public String generateVector(TextField textAreaN) {
-        Integer n = getInteger(textAreaN);
-        Double[] vector = new Double[n];
-        SecureRandom rand = new SecureRandom();
+
+    public String generateVector(int n) {
+        double[] vector = new double[n];
         for (int i = 0; i < vector.length; i++) {
-            vector[i] = (double) rand.nextInt(10);
-
+            vector[i] = rand.nextInt(10);
         }
         return asString(vector);
     }
 
-    public String asString(Double [] vector) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < vector.length; i++) {
-            stringBuilder.append(vector[i]).append(System.lineSeparator());
+    public String asString(double[] vector) {
+        StringBuilder stringBuffer = new StringBuilder();
+        for (double v : vector) {
+            stringBuffer.append(v).append(str);
         }
-        return stringBuilder.toString();
+        return stringBuffer.toString();
     }
 
-    public String asString(Double [][] matrix) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < matrix.length; i++) {
+    public String asString(double[][] matrix) {
+        StringBuilder stringBuffer = new StringBuilder();
+        for (double[] doubles : matrix) {
             for (int j = 0; j < matrix.length; j++) {
-                stringBuilder.append(matrix[i][j]).append(' ');
+                stringBuffer.append(doubles[j]).append('\t');
             }
-            stringBuilder.replace(stringBuilder.length(), stringBuilder.length(), System.lineSeparator());
+            stringBuffer.append(str);
         }
-        return stringBuilder.toString();
+        return stringBuffer.toString();
     }
 
 

@@ -6,89 +6,91 @@ import lab2.service.LoadTextService;
 
 import java.util.Arrays;
 
+import static lab2.Main.log;
+
 public class Compute {
-    private final Integer n;
-    private final Double[][] A;
-    private final Double[] b;
+    private volatile int n;
+    private volatile double[][] a;
+    private volatile double[] b;
     //   -----   y1=A*b  -----
-    private final Double[] y1;
+    private volatile double[] y1;
 
-    private final Double[][] A1;
-    private final Double[] b1;
-    private final Double[] c1;
+    private volatile double[][] a1;
+    private volatile double[] b1;
+    private volatile double[] c1;
     //   -----   y2=A1(b1-24c1)  -----
-    private final Double[] y2;
+    private volatile double[] y2;
 
-    private final Double[][] A2;
-    private final Double[][] B2;
-    private final Double[][] C2;
+    private volatile double[][] a2;
+    private volatile double[][] b2;
+    private volatile double[][] c2;
     //  -----   Y3=A2(B2+24C2)  -----
-    private final Double[][] Y3;
+    private volatile double[][] y3;
     // ------ x divided into two parts: LEFT (y2'Y3y1 + y1'), RIGHT(Y3y1+y2)
     // vector-row
-    private final Double[] LEFT;
+    private volatile double[] left;
     // vector-column
-    private final Double[] RIGHT;
+    private volatile double[] right;
     //x - number
-    private Double x;
+    private volatile double x;
 
-    private ComputerController controller;
+    private volatile ComputerController controller;
 
 
-    public Compute(ComputerController computerController, Integer n) {
+    public Compute(ComputerController computerController, int n) {
         this.n = n;
-        A = new Double[n][n];
-        b = new Double[n];
-        y1 = new Double[n];
-        A1 = new Double[n][n];
-        b1 = new Double[n];
-        c1 = new Double[n];
-        y2 = new Double[n];
-        A2 = new Double[n][n];
-        B2 = new Double[n][n];
-        C2 = new Double[n][n];
-        Y3 = new Double[n][n];
-        LEFT = new Double[n];
-        RIGHT = new Double[n];
+        a = new double[n][n];
+        b = new double[n];
+        y1 = new double[n];
+        a1 = new double[n][n];
+        b1 = new double[n];
+        c1 = new double[n];
+        y2 = new double[n];
+        a2 = new double[n][n];
+        b2 = new double[n][n];
+        c2 = new double[n][n];
+        y3 = new double[n][n];
+        left = new double[n];
+        right = new double[n];
         controller = computerController;
     }
 
-    public Double[] calculateB() {
+    public double[] calculateB() {
         for (int i = 0; i < n; i += 2) {
-            b[i] = 24.0 / (i * i + 4);
+            b[i] = 24.0 / ((i + 1) * (i + 1) + 4);
         }
         for (int i = 1; i < n; i += 2) {
             b[i] = 24.0;
         }
-        controller.log("b calculated ... " + Arrays.deepToString(b));
+        log.info("b: " + Arrays.toString(b));
         return b;
     }
 
-    public Double[][] calculateC2() {
+    public double[][] calculateC2() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                C2[i][j] = 24.0 * (i + 3 * j * j);
+                c2[i][j] = 24.0 / ((i + 1) + 3 * (j + 1) * (j + 1));
             }
         }
-        controller.log("C2 calculated ... " + Arrays.deepToString(C2));
-        return C2;
+        log.info("C2: " + Arrays.deepToString(c2));
+        return c2;
     }
 
-    public Double[] calculateY1() {
-        calculateMatrixMultVector(A, b1, y1);
-        controller.log("Y1 calculated ... " + Arrays.deepToString(y1));
+    public double[] calculateY1() {
+        calculateMatrixMultVector(a, b, y1);
+        log.info("y1: " + Arrays.toString(y1));
         return y1;
     }
 
-    private Double[] calculateMatrixMultVector(Double[][] matrix, Double[] vector, Double[] result) {
+    private double[] calculateMatrixMultVector(double[][] matrix, double[] vector, double[] result) {
         for (int i = 0; i < n; i++) {
             result[i] = multTwoVectors(matrix[i], vector);
         }
         return result;
     }
 
-    public Double multTwoVectors(Double[] matrixRow, Double[] vector) {
-        Double sum = 0.0;
+    public double multTwoVectors(double[] matrixRow, double[] vector) {
+        double sum = 0.0;
         for (int i = 0; i < n; i++) {
             sum += matrixRow[i] * vector[i];
         }
@@ -96,39 +98,39 @@ public class Compute {
     }
 
 
-    public Double[] calculateY2() {
-        calculateMatrixMultVector(A1, b1Minus24C1(), y2);
-        controller.log("y2 calculated ... " + Arrays.deepToString(y2));
+    public double[] calculateY2() {
+        calculateMatrixMultVector(a1, b1Minus24C1(), y2);
+        log.info("y2: " + Arrays.toString(y2));
         return y2;
     }
 
-    public Double[][] B2plus24C2T() {
-        Double[][] matrix = new Double[n][n];
+    public double[][] B2plus24C2T() {
+        double[][] matrix = new double[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                matrix[j][i] = B2[i][j] - 24 * C2[i][j];
+                matrix[j][i] = b2[i][j] + 24 * c2[i][j];
             }
         }
-        controller.log("B2+24C2' calculated ... " + Arrays.deepToString(matrix));
+        log.info("B2+24*C2: " + Arrays.deepToString(matrix));
         return matrix;
     }
 
-    public Double[] b1Minus24C1() {
-        Double[] vector = new Double[n];
+    public double[] b1Minus24C1() {
+        double[] vector = new double[n];
         for (int i = 0; i < n; i++) {
             vector[i] = b1[i] - 24 * c1[i];
         }
-        controller.log("b1-24c1 calculated ... " + Arrays.deepToString(vector));
+        log.info("b1-24*c1: " + Arrays.toString(vector));
         return vector;
     }
 
-    public Double[][] calculateY3() {
-        calculateMatrixMultMatrix(A2, B2plus24C2T(), Y3);
-        controller.log("y2Y3^2y1+y1 calculated ... " + Arrays.deepToString(Y3));
-        return Y3;
+    public double[][] calculateY3() {
+        calculateMatrixMultMatrix(a2, B2plus24C2T(), y3);
+        log.info("Y3: " + Arrays.deepToString(y3));
+        return y3;
     }
 
-    private Double[][] calculateMatrixMultMatrix(Double[][] left, Double[][] right, Double[][] result) {
+    private double[][] calculateMatrixMultMatrix(double[][] left, double[][] right, double[][] result) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 result[i][j] = multTwoVectors(left[i], right[j]);
@@ -138,21 +140,22 @@ public class Compute {
     }
 
 
-    public Double[] calculateY2Y3Y3y1PlusY1() {
-        Double[] y2y3 = calculateVectorMultMatrix(y2, Y3);
-        Double[] y2y3y3 = calculateVectorMultMatrix(y2y3, Y3);
-        Double y2y3y3y1 = multTwoVectors(y2y3y3, y1);
+    public double[] calculateY2Y3Y3y1PlusY1() {
+        double[] matrix = left;
+        double[] y2y3 = calculateVectorMultMatrix(y2, y3);
+        double[] y2y3y3 = calculateVectorMultMatrix(y2y3, y3);
+        double y2y3y3y1 = multTwoVectors(y2y3y3, y1);
         for (int i = 0; i < n; i++) {
-            LEFT[i] = y2y3y3y1 + y1[i];
+            matrix[i] = y2y3y3y1 + y1[i];
         }
-        controller.log("y2Y3^2y1+y1 calculated ... " + Arrays.deepToString(LEFT));
-        return LEFT;
+        log.info("y2Y3^2y1+y1': " + Arrays.toString(matrix));
+        return matrix;
     }
 
-    private Double[] calculateVectorMultMatrix(Double[] vector, Double[][] matrix) {
-        Double[] result = new Double[n];
+    private double[] calculateVectorMultMatrix(double[] vector, double[][] matrix) {
+        double[] result = new double[n];
         for (int i = 0; i < n; i++) {
-            Double sum = 0.0;
+            double sum = 0.0;
             for (int j = 0; j < n; j++) {
                 sum += vector[j] * matrix[j][i];
             }
@@ -161,27 +164,27 @@ public class Compute {
         return result;
     }
 
-    public Double[] calculateY3Y1plusY2() {
-        Double[] y3y1 = calculateMatrixMultVector(Y3, y1, new Double[n]);
+    public double[] calculateY3Y1plusY2() {
+        double [] vector = right;
+        double[] y3y1 = calculateMatrixMultVector(y3, y1, new double[n]);
         for (int i = 0; i < n; i++) {
-            RIGHT[i] = y3y1[i] + y2[i];
+            vector[i] = y3y1[i] + y2[i];
         }
-        controller.log("Y3y1+y2 calculated ... " + Arrays.deepToString(RIGHT));
-        return RIGHT;
+        log.info("Y3y1+y2': " + Arrays.toString(vector));
+        return vector;
     }
 
-    public Double getX() {
-        return x = multTwoVectors(LEFT, RIGHT);
+    public double getX() {
+        x = multTwoVectors(left, right);
+        return x;
     }
 
-    public void calculateB2() {
-        textAreaToMatrix(controller.getTextAreaB2(), B2);
-        controller.log("B2 calculated ... " + Arrays.deepToString(B2));
+    public double[][] calculateB2() {
+        return textAreaToMatrix(controller.getTextAreaB2(), b2, "B2");
     }
 
-    private Double[][] textAreaToMatrix(TextArea textAreaB2, Double[][] matrix) {
-        LoadTextService textService = new LoadTextService();
-        String text = textService.read(textAreaB2);
+    private double[][] textAreaToMatrix(TextArea textAreaB2, double[][] matrix, String matrixName) {
+        String text = LoadTextService.read(textAreaB2);
         String[] numbers = text.split("[\\s\n]+");
         int k = 0;
         for (int i = 0; i < n; i++) {
@@ -189,43 +192,41 @@ public class Compute {
                 matrix[i][j] = Double.parseDouble(numbers[k++]);
             }
         }
+        log.info(matrixName + Arrays.deepToString(matrix));
         return matrix;
     }
 
-    private Double[] textAreaToVector(TextArea textAreaB2, Double[] vector) {
-        LoadTextService textService = new LoadTextService();
-        String text = textService.read(textAreaB2);
+    private double[] textAreaToVector(TextArea textAreaB2, double[] vector, String vectorName) {
+        String text = LoadTextService.read(textAreaB2);
         String[] numbers = text.split("[\\s\n]+");
         int k = 0;
         for (int i = 0; i < n; i++) {
             vector[i] = Double.parseDouble(numbers[i]);
         }
+        log.info(vectorName + Arrays.toString(vector));
         return vector;
     }
 
 
-    public void calculateA2() {
-        textAreaToMatrix(controller.getTextAreaA2(), A2);
-        controller.log("A2 calculated ... " + Arrays.deepToString(A2));
+    public double[][] calculateA2() {
+        return textAreaToMatrix(controller.getTextAreaA2(), a2, "A2");
     }
 
-    public void calculateB1() {
-        textAreaToVector(controller.getTextAreaB1(), b1);
-        controller.log("b1 calculated ... " + Arrays.deepToString(b1));
+    public double[] calculateB1() {
+        return textAreaToVector(controller.getTextAreaB1(), b1, "b1");
     }
 
-    public void calculateC1() {
-        textAreaToVector(controller.getTextAreaC1(), c1);
-        controller.log("c1 calculated ... " + Arrays.deepToString(c1));
+    public double[] calculateC1() {
+        return textAreaToVector(controller.getTextAreaC1(), c1, "c1");
     }
 
-    public void calculateA1() {
-        textAreaToMatrix(controller.getTextAreaA1(), A1);
-        controller.log("A1 calculated ... " + Arrays.deepToString(A1));
+    public double[][] calculateA1() {
+        return textAreaToMatrix(controller.getTextAreaA1(), a1, "A1");
     }
 
-    public void calculateA() {
-        textAreaToMatrix(controller.getTextAreaA(), A);
-        controller.log("A calculated ... " + Arrays.deepToString(A));
+    public double[][] calculateA() {
+        return textAreaToMatrix(controller.getTextAreaA(), a, "A");
     }
+
+
 }
