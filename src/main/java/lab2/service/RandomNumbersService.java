@@ -10,7 +10,7 @@ public class RandomNumbersService {
     final String str = System.lineSeparator();
 
     public String generateMatrix(int n) {
-        double[][] matrix = new double[n][n];
+        float[][] matrix = new float[n][n];
         SecureRandom rand = new SecureRandom();
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
@@ -24,26 +24,26 @@ public class RandomNumbersService {
 
 
     public String generateVector(int n) {
-        double[] vector = new double[n];
+        float[] vector = new float[n];
         for (int i = 0; i < vector.length; i++) {
             vector[i] = rand.nextInt(10);
         }
         return asString(vector);
     }
 
-    public String asString(double[] vector) {
+    public String asString(float[] vector) {
         StringBuilder stringBuffer = new StringBuilder();
-        for (double v : vector) {
+        for (float v : vector) {
             stringBuffer.append(v).append(str);
         }
         return stringBuffer.toString();
     }
 
-    public String asString(double[][] matrix) {
+    public String asString(float[][] matrix) {
         StringBuilder stringBuffer = new StringBuilder();
-        for (double[] doubles : matrix) {
+        for (float[] floats : matrix) {
             for (int j = 0; j < matrix.length; j++) {
-                stringBuffer.append(doubles[j]).append('\t');
+                stringBuffer.append(floats[j]).append('\t');
             }
             stringBuffer.append(str);
         }

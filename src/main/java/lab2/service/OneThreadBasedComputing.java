@@ -4,8 +4,7 @@ import lab2.controller.ComputerController;
 import lab2.model.Compute;
 
 public class OneThreadBasedComputing {
-    public static Double calculate(ComputerController computerController, int n){
-
+    public static Float calculate(ComputerController computerController, int n){
         Compute compute = new Compute(computerController, n);
         compute.calculateC2();
         compute.calculateB2();

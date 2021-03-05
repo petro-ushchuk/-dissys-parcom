@@ -40,7 +40,7 @@ public class ComputerController {
     public void start() throws InterruptedException, ExecutionException, IOException {
         log.info("Started...");
         long start = System.currentTimeMillis();
-        double x = 0.0;
+        float x = 0.0F;
         if(multithreading.isSelected()) {
             x = ThreadBasedComputing.calculate(this, Integer.parseInt(textFieldN.getText()));
         }
