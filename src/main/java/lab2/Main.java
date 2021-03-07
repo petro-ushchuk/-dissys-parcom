@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lab2.controller.ComputerController;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -17,6 +16,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Main extends Application {
+
     public static Logger log;
     public static Stage primaryStage;
 
@@ -27,10 +27,12 @@ public class Main extends Application {
         URL resource = getClass().getResource("/sample.fxml");
         loader.setLocation(resource);
         Parent root = loader.load();
-        loader.setController(new ComputerController());
+        ComputerController controller = new ComputerController();
+        loader.setController(controller);
         primaryStage.setTitle("Обчислення виразу x=(y2'Y3^2*y1 + y1')(Y3y1+y2)");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(new Scene(root, 675, 400));
         primaryStage.show();
+
     }
 
 
