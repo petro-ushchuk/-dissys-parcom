@@ -12,12 +12,11 @@ import lab4.Client;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
 import static lab2.Main.log;
 
-public class ComputerController implements Serializable {
+public class ComputerController {
     private static final LoadTextService textService = new LoadTextService();
     private static final RandomNumbersService random = new RandomNumbersService();
 

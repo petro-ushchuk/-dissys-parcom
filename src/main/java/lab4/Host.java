@@ -17,7 +17,7 @@ public class Host {
         System.exit(0);
     }
 
-    public static void main(String[] args) throws RemoteException {
+    public static void main(String[] args){
         if(args.length > 2){
             System.out.println("Enter [host name] [port]");
             return;
@@ -29,6 +29,8 @@ public class Host {
             final Host host = new Host(name, port);
         }catch (NumberFormatException e){
             System.out.println("Bad host");
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 }

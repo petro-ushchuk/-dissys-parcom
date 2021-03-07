@@ -13,7 +13,6 @@ public class OneThreadBasedComputing {
         compute.calculateB1();
         compute.calculateC1();
         compute.calculateA1();
-        compute.calculateB();
         compute.calculateA();
         compute.B2plus24C2T();
         compute.calculateY3();

@@ -7,35 +7,37 @@ import lab2.service.LoadTextService;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static lab2.Main.log;
+//import static lab2.Main.log;
 
 public class Compute implements Serializable {
-    private volatile int n;
-    private volatile float[][] a;
-    private volatile float[] b;
+    private int n;
+    private float[][] a;
+    private float[] b;
     //   -----   y1=A*b  -----
-    private volatile float[] y1;
+    private float[] y1;
 
-    private volatile float[][] a1;
-    private volatile float[] b1;
-    private volatile float[] c1;
+    private float[][] a1;
+    private float[] b1;
+    private float[] c1;
     //   -----   y2=A1(b1-24c1)  -----
-    private volatile float[] y2;
+    private float[] b1minus24c1;
+    private float[] y2;
 
-    private volatile float[][] a2;
-    private volatile float[][] b2;
-    private volatile float[][] c2;
+    private float[][] a2;
+    private float[][] b2;
+    private float[][] c2;
     //  -----   Y3=A2(B2+24C2)  -----
-    private volatile float[][] y3;
+    private float[][] b2plus24c2t;
+    private float[][] y3;
     // ------ x divided into two parts: LEFT (y2'Y3y1 + y1'), RIGHT(Y3y1+y2)
     // vector-row
-    private volatile float[] left;
+    private float[] left;
     // vector-column
-    private volatile float[] right;
+    private float[] right;
     //x - number
-    private volatile float x;
+    private float x;
 
-    private volatile ComputerController controller;
+    private transient volatile ComputerController controller;
 
 
     public Compute(ComputerController computerController, int n) {
@@ -83,14 +85,14 @@ public class Compute implements Serializable {
         return y1;
     }
 
-    private float[] calculateMatrixMultVector(float[][] matrix, float[] vector, float[] result) {
+    public float[] calculateMatrixMultVector(float[][] matrix, float[] vector, float[] result) {
         for (int i = 0; i < n; i++) {
             result[i] = multTwoVectors(matrix[i], vector);
         }
         return result;
     }
 
-    public float multTwoVectors(float[] matrixRow, float[] vector) {
+    public Float multTwoVectors(float[] matrixRow, float[] vector) {
         float sum = 0.0F;
         for (int i = 0; i < n; i++) {
             sum += matrixRow[i] * vector[i];
@@ -100,7 +102,7 @@ public class Compute implements Serializable {
 
 
     public float[] calculateY2() {
-        calculateMatrixMultVector(a1, b1Minus24C1(), y2);
+        calculateMatrixMultVector(a1, b1minus24c1, y2);
 //        log.info("y2: " + Arrays.toString(y2));
         return y2;
     }
@@ -112,6 +114,7 @@ public class Compute implements Serializable {
                 matrix[j][i] = b2[i][j] + 24 * c2[i][j];
             }
         }
+        b2plus24c2t = matrix;
 //        log.info("B2+24*C2: " + Arrays.deepToString(matrix));
         return matrix;
     }
@@ -121,12 +124,13 @@ public class Compute implements Serializable {
         for (int i = 0; i < n; i++) {
             vector[i] = b1[i] - 24 * c1[i];
         }
+        b1minus24c1 = vector;
 //        log.info("b1-24*c1: " + Arrays.toString(vector));
         return vector;
     }
 
     public float[][] calculateY3() {
-        calculateMatrixMultMatrix(a2, B2plus24C2T(), y3);
+        calculateMatrixMultMatrix(a2, b2plus24c2t, y3);
 //        log.info("Y3: " + Arrays.deepToString(y3));
         return y3;
     }

@@ -63,18 +63,18 @@
                 <Button layoutX="326.0" layoutY="64.0" mnemonicParsing="false" onAction="#generate" text="Згенерувати всі" />
                 <Label layoutX="326.0" layoutY="110.0" text="Результат:" />
                 <TextField fx:id="result" layoutX="326.0" layoutY="134.0" />
-                <RadioButton onAction="#showPane" fx:id="multithreading" layoutX="326.0" layoutY="193.0" mnemonicParsing="false" selected="true" text="Багатопотокове обчислення">
+                <RadioButton fx:id="multithreading" layoutX="326.0" layoutY="193.0" mnemonicParsing="false" onAction="#showPane" selected="true" text="Багатопотокове обчислення">
                     <toggleGroup>
-                        <ToggleGroup fx:id="group"/>
+                        <ToggleGroup fx:id="group" />
                     </toggleGroup>
                 </RadioButton>
 
-                <RadioButton onAction="#showPane" fx:id="oneThread" layoutX="326.0" layoutY="163.0" mnemonicParsing="false" text="Однопотокове обчислення">
+                <RadioButton fx:id="oneThread" layoutX="326.0" layoutY="163.0" mnemonicParsing="false" onAction="#showPane" text="Однопотокове обчислення">
                     <toggleGroup>
                         <fx:reference source="group" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton onAction="#showPane" fx:id="remote" layoutX="326.0" layoutY="223.0" mnemonicParsing="false" text="Паралельне обчислення на віддаленому комп'ютері">
+                <RadioButton fx:id="remote" layoutX="326.0" layoutY="223.0" mnemonicParsing="false" onAction="#showPane" text="Паралельне обчислення на віддаленому комп'ютері">
                     <toggleGroup>
                         <fx:reference source="group" />
                     </toggleGroup>
@@ -87,6 +87,7 @@
                     <TextField fx:id="port" layoutX="136.0" layoutY="22.0" prefHeight="25.0" prefWidth="51.0" text="8080" />
                     <TextField fx:id="host" layoutX="204.0" layoutY="22.0" prefHeight="25.0" prefWidth="109.0" text="host" />
                 </Pane>
+            <Label fx:id="time" layoutX="490.0" layoutY="138.0" />
             </AnchorPane>
         </Tab>
         <Tab text="Лог">

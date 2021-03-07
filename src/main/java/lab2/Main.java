@@ -6,10 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lab2.controller.ComputerController;
+import lab4.Host;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.logging.FileHandler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -36,13 +38,16 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
+        Thread t =  new Thread(() -> Host.main(new String[]{"host", "8080"}));
+        t.setDaemon(true);
+        t.start();
         FileHandler fh;
         try {
             InputStream stream = Main.class.getClassLoader().
                     getResourceAsStream("logging.properties");
             LogManager.getLogManager().readConfiguration(stream);
-            log = Logger.getLogger("Application Log");
+            log = Logger.getLogger(Main.class.getName());
             fh = new FileHandler("./log.txt");
             log.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
@@ -51,6 +56,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
         launch(args);
+
     }
 
 

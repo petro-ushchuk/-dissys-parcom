@@ -3,10 +3,10 @@ package lab4;
 import lab2.model.Compute;
 
 import java.rmi.Remote;
-import java.util.concurrent.ExecutionException;
+import java.rmi.RemoteException;
 
-public interface Brain extends Remote {
+@FunctionalInterface
+public interface Brain extends Remote{
 
-    float[] calculateLeft(Compute compute);
-
+    float[] calculateLeft(Compute compute) throws RemoteException;
 }

@@ -1,7 +1,5 @@
 package lab2.service;
 
-import javafx.scene.control.TextField;
-
 import java.security.SecureRandom;
 
 public class RandomNumbersService {
@@ -20,8 +18,6 @@ public class RandomNumbersService {
         }
         return asString(matrix);
     }
-
-
 
     public String generateVector(int n) {
         float[] vector = new float[n];
