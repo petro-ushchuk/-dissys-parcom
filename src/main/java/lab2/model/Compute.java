@@ -4,11 +4,12 @@ import javafx.scene.control.TextArea;
 import lab2.controller.ComputerController;
 import lab2.service.LoadTextService;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import static lab2.Main.log;
 
-public class Compute {
+public class Compute implements Serializable {
     private volatile int n;
     private volatile float[][] a;
     private volatile float[] b;
