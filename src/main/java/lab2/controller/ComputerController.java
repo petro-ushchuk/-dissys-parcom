@@ -89,6 +89,7 @@ public class ComputerController {
                     x = Client.calculate(myClient, compute);
                     connectionStatus.setText("Done");
                 } catch (ExecutionException exe) {
+                    exe.printStackTrace();
                     Platform.runLater(() -> {
                         connectionStatus.setTextFill(Paint.valueOf("RED"));
                         connectionStatus.setText(exe.getCause().getMessage());
@@ -107,6 +108,7 @@ public class ComputerController {
             log.info("Finished in " + end + "ms.");
             setOnLog();
         } catch (NumberFormatException | IOException | InterruptedException | ExecutionException e) {
+            e.printStackTrace();
             textFieldN.requestFocus();
         }
 
