@@ -1,7 +1,8 @@
-package lab4;
+package lab4.client;
 
-import lab2.controller.ComputerController;
 import lab2.model.Compute;
+import lab4.Brain;
+import lab4.exception.BadConnectionException;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -13,18 +14,16 @@ import java.util.concurrent.ExecutionException;
 public class Client {
     public Brain remotingBrain;
 
-    public Client(String address, String name, int port) {
+    public Client(String address, String name, int port) throws BadConnectionException {
         try {
             remotingBrain = (Brain) Naming.lookup("//" + address + ":" + port + "/" + name);
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
-            System.err.println("Can't connect to " + address + ":" + port + "/" + name);
-            return;
+            throw new BadConnectionException("Can't connect to this adress");
         }
         System.out.println("Connection to " + address + ":" + port + "/" + name + " is succeed");
     }
 
     public static float calculate(Client myClient, Compute compute) throws ExecutionException, InterruptedException {
-
         CompletableFuture<float[][]> c2 = CompletableFuture.supplyAsync(() -> {
             try {
                 return myClient.remotingBrain.calculateC2(compute.getN());
@@ -58,13 +57,8 @@ public class Client {
             }
             return null;
         });
-
-
-
         CompletableFuture<float[][]> y3 = b2.thenCombine(c2, Compute::staticB224c2).thenCombine(a2, Compute::staticMatrxMultMatrx);
-
         CompletableFuture<float[]> y2 = b1.thenCombine(c1, Compute::staticB124C1).thenCombine(a1, (bk, ak) -> Compute.calculateMatrixMultVector(ak, bk));
-
         CompletableFuture<float[]> right = CompletableFuture.supplyAsync(()->{
             try {
                 return myClient.remotingBrain.calculateRight(y1.get(), y2.get(), y3.get());
@@ -77,7 +71,6 @@ public class Client {
                 .thenCombine(y3, Compute::calculateVectorMultMatrix)
                 .thenCombine(y1, Compute::multTwoVectors)
                 .thenCombine(y1, Compute::vectorAddNumber);
-
         CompletableFuture<Float> x = left.thenCombine(right, Compute::multTwoVectors);
         return x.get();
     }

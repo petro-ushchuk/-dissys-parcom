@@ -3,97 +3,126 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="665.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lab2.controller.ComputerController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="665.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="lab2.controller.ComputerController">
     <TabPane prefHeight="415.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <Tab text="Програма">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="600.0">
                 <TabPane layoutY="-4.0" prefHeight="375.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE">
                     <Tab text="A">
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="300.0">
-                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці A:" />
-                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextA" text="З файлу" />
-                            <TextArea fx:id="textAreaA" layoutX="14.0" layoutY="84.0" prefHeight="248.0" prefWidth="250.0" />
-                            <Button layoutX="198.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextA" text="Зберегти" />
+                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці A:"/>
+                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextA"
+                                    text="З файлу"/>
+                            <TextArea fx:id="textAreaA" layoutX="14.0" layoutY="84.0" prefHeight="248.0"
+                                      prefWidth="250.0"/>
+                            <Button layoutX="198.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextA"
+                                    text="Зберегти"/>
                         </AnchorPane>
                     </Tab>
                     <Tab text="A1">
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="300.0">
-                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці A1:" />
-                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextA1" text="З файлу" />
-                            <TextArea fx:id="textAreaA1" layoutX="14.0" layoutY="84.0" prefHeight="248.0" prefWidth="250.0" />
-                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextA1" text="Зберегти" />
+                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці A1:"/>
+                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextA1"
+                                    text="З файлу"/>
+                            <TextArea fx:id="textAreaA1" layoutX="14.0" layoutY="84.0" prefHeight="248.0"
+                                      prefWidth="250.0"/>
+                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextA1"
+                                    text="Зберегти"/>
                         </AnchorPane>
                     </Tab>
                     <Tab text="b1">
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="300.0">
-                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для вектора-стовпця b1:" />
-                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextB1" text="З файлу" />
-                            <TextArea fx:id="textAreaB1" layoutX="14.0" layoutY="84.0" prefHeight="248.0" prefWidth="250.0" />
-                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextB1" text="Зберегти" />
+                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для вектора-стовпця b1:"/>
+                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextB1"
+                                    text="З файлу"/>
+                            <TextArea fx:id="textAreaB1" layoutX="14.0" layoutY="84.0" prefHeight="248.0"
+                                      prefWidth="250.0"/>
+                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextB1"
+                                    text="Зберегти"/>
                         </AnchorPane>
                     </Tab>
                     <Tab text="c1">
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="300.0">
-                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для вектора-стовпця c1:" />
-                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextC1" text="З файлу" />
-                            <TextArea fx:id="textAreaC1" layoutX="14.0" layoutY="84.0" prefHeight="248.0" prefWidth="250.0" />
-                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextC1" text="Зберегти" />
+                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для вектора-стовпця c1:"/>
+                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextC1"
+                                    text="З файлу"/>
+                            <TextArea fx:id="textAreaC1" layoutX="14.0" layoutY="84.0" prefHeight="248.0"
+                                      prefWidth="250.0"/>
+                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextC1"
+                                    text="Зберегти"/>
                         </AnchorPane>
                     </Tab>
                     <Tab text="A2">
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="300.0">
-                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці A2:" />
-                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextA2" text="З файлу" />
-                            <TextArea fx:id="textAreaA2" layoutX="14.0" layoutY="84.0" prefHeight="248.0" prefWidth="250.0" />
-                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextA2" text="Зберегти" />
+                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці A2:"/>
+                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextA2"
+                                    text="З файлу"/>
+                            <TextArea fx:id="textAreaA2" layoutX="14.0" layoutY="84.0" prefHeight="248.0"
+                                      prefWidth="250.0"/>
+                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextA2"
+                                    text="Зберегти"/>
                         </AnchorPane>
                     </Tab>
                     <Tab text="B2">
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="300.0">
-                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці B2:" />
-                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextB2" text="З файлу" />
-                            <TextArea fx:id="textAreaB2" layoutX="14.0" layoutY="84.0" prefHeight="248.0" prefWidth="250.0" />
-                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextB2" text="Зберегти" />
+                            <Label layoutX="14.0" layoutY="14.0" text="Введіть значення для матриці B2:"/>
+                            <Button layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#setTextB2"
+                                    text="З файлу"/>
+                            <TextArea fx:id="textAreaB2" layoutX="14.0" layoutY="84.0" prefHeight="248.0"
+                                      prefWidth="250.0"/>
+                            <Button layoutX="220.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveTextB2"
+                                    text="Зберегти"/>
                         </AnchorPane>
                     </Tab>
                 </TabPane>
-                <Button layoutX="527.0" layoutY="332.0" mnemonicParsing="false" onAction="#start" text="Почати розрахунок" />
-                <Label layoutX="326.0" layoutY="14.0" text="Введіть n: " />
-                <TextField fx:id="textFieldN" layoutX="326.0" layoutY="31.0" />
-                <Button layoutX="326.0" layoutY="64.0" mnemonicParsing="false" onAction="#generate" text="Згенерувати всі" />
-                <Label layoutX="326.0" layoutY="110.0" text="Результат:" />
-                <TextField fx:id="result" layoutX="326.0" layoutY="134.0" />
-                <RadioButton fx:id="multithreading" layoutX="326.0" layoutY="193.0" mnemonicParsing="false" onAction="#showPane" selected="true" text="Багатопотокове обчислення">
+                <Button layoutX="527.0" layoutY="332.0" mnemonicParsing="false" onAction="#start"
+                        text="Почати розрахунок"/>
+                <Label layoutX="326.0" layoutY="14.0" text="Введіть n: "/>
+                <TextField fx:id="textFieldN" layoutX="326.0" layoutY="31.0"/>
+                <Button layoutX="326.0" layoutY="64.0" mnemonicParsing="false" onAction="#generate"
+                        text="Згенерувати всі"/>
+                <Label layoutX="326.0" layoutY="110.0" text="Результат:"/>
+                <TextField fx:id="result" layoutX="326.0" layoutY="134.0"/>
+                <RadioButton fx:id="multithreading" layoutX="326.0" layoutY="193.0" mnemonicParsing="false"
+                             onAction="#showPane" text="Багатопотокове обчислення">
                     <toggleGroup>
-                        <ToggleGroup fx:id="group" />
+                        <ToggleGroup fx:id="group"/>
                     </toggleGroup>
                 </RadioButton>
 
-                <RadioButton fx:id="oneThread" layoutX="326.0" layoutY="163.0" mnemonicParsing="false" onAction="#showPane" text="Однопотокове обчислення">
+                <RadioButton fx:id="oneThread" layoutX="326.0" layoutY="163.0" mnemonicParsing="false"
+                             onAction="#showPane" text="Однопотокове обчислення">
                     <toggleGroup>
-                        <fx:reference source="group" />
+                        <fx:reference source="group"/>
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton fx:id="remote" layoutX="326.0" layoutY="223.0" mnemonicParsing="false" onAction="#showPane" text="Паралельне обчислення на віддаленому комп'ютері">
+                <RadioButton fx:id="remote" layoutX="326.0" layoutY="223.0" mnemonicParsing="false" onAction="#showPane"
+                             selected="true" text="Паралельне обчислення на віддаленому комп'ютері">
                     <toggleGroup>
-                        <fx:reference source="group" />
+                        <fx:reference source="group"/>
                     </toggleGroup>
                 </RadioButton>
-                <Pane fx:id="remotePane" layoutX="327.0" layoutY="251.0" prefHeight="69.0" prefWidth="327.0" visible="false">
-                    <Label layoutX="14.0" layoutY="6.0" text="Адреса" />
-                    <Label layoutX="204.0" layoutY="6.0" text="Ім'я хоста" />
-                    <Label layoutX="136.0" layoutY="6.0" text="Порт" />
-                    <TextField fx:id="address" layoutX="14.0" layoutY="22.0" prefHeight="25.0" prefWidth="110.0" text="192.168.1.110" />
-                    <TextField fx:id="port" layoutX="136.0" layoutY="22.0" prefHeight="25.0" prefWidth="51.0" text="8080" />
-                    <TextField fx:id="host" layoutX="204.0" layoutY="22.0" prefHeight="25.0" prefWidth="109.0" text="host" />
+                <Pane fx:id="remotePane" layoutX="327.0" layoutY="251.0" prefHeight="69.0" prefWidth="327.0">
+                    <Label layoutX="14.0" layoutY="6.0" text="Адреса"/>
+                    <Label layoutX="204.0" layoutY="6.0" text="Ім'я хоста"/>
+                    <Label layoutX="136.0" layoutY="6.0" text="Порт"/>
+                    <TextField fx:id="address" layoutX="14.0" layoutY="22.0" prefHeight="25.0" prefWidth="110.0"
+                               text="192.168.1.110"/>
+                    <TextField fx:id="port" layoutX="136.0" layoutY="22.0" prefHeight="25.0" prefWidth="51.0"
+                               text="8080"/>
+                    <TextField fx:id="host" layoutX="204.0" layoutY="22.0" prefHeight="25.0" prefWidth="109.0"
+                               text="host"/>
+                    <Label fx:id="connectionStatus" layoutX="14.0" layoutY="53.0"/>
                 </Pane>
-            <Label fx:id="time" layoutX="490.0" layoutY="138.0" />
+                <Label fx:id="time" layoutX="490.0" layoutY="138.0"/>
             </AnchorPane>
         </Tab>
         <Tab text="Лог">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                <TextArea fx:id="logArea" layoutX="13.0" layoutY="14.0" prefHeight="304.0" prefWidth="574.0" />
-                <Button layoutX="521.0" layoutY="332.0" mnemonicParsing="false" onAction="#saveLog" text="Зберегти" />
+                <TextArea fx:id="logArea" layoutX="13.0" layoutY="14.0" prefHeight="304.0" prefWidth="574.0"/>
+                <Button layoutX="521.0" layoutY="332.0" mnemonicParsing="false" onAction="#saveLog" text="Зберегти"/>
             </AnchorPane>
         </Tab>
     </TabPane>

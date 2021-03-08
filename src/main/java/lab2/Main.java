@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lab2.controller.ComputerController;
-import lab4.Host;
 
 import java.io.IOException;
 import java.io.InputStream;

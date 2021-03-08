@@ -1,5 +1,6 @@
 package lab2.controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -8,12 +9,18 @@ import lab2.service.LoadTextService;
 import lab2.service.OneThreadBasedComputing;
 import lab2.service.RandomNumbersService;
 import lab2.service.ThreadBasedComputing;
-import lab4.Client;
+import lab4.client.Client;
+import lab4.client.ClientCallable;
+import lab4.exception.BadConnectionException;
+import javafx.scene.paint.Paint;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import static lab2.Main.log;
 
@@ -22,51 +29,87 @@ public class ComputerController {
     private static final RandomNumbersService random = new RandomNumbersService();
 
 
-    @FXML private final ToggleGroup group = new ToggleGroup();
-    @FXML private Pane remotePane;
+    @FXML
+    private final ToggleGroup group = new ToggleGroup();
+    @FXML
+    private Pane remotePane;
 
-    @FXML private TextArea logArea;
-    @FXML private Label time;
+    @FXML
+    private TextArea logArea;
+    @FXML
+    private Label time;
+    @FXML
+    private Label connectionStatus;
+    @FXML
+    private RadioButton multithreading;
+    @FXML
+    private RadioButton oneThread;
+    @FXML
+    private RadioButton remote;
+    @FXML
+    private TextField address;
+    @FXML
+    private TextField port;
+    @FXML
+    private TextField host;
 
-    @FXML private RadioButton multithreading;
-    @FXML private RadioButton oneThread;
-    @FXML private RadioButton remote;
-    @FXML private TextField address;
-    @FXML private TextField port;
-    @FXML private TextField host;
+    @FXML
+    private TextField textFieldN;
+    @FXML
+    private TextField result;
 
-    @FXML private TextField textFieldN;
-    @FXML private TextField result;
+    @FXML
+    private TextArea textAreaA;
+    @FXML
+    private TextArea textAreaA1;
+    @FXML
+    private TextArea textAreaB1;
+    @FXML
+    private TextArea textAreaC1;
+    @FXML
+    private TextArea textAreaA2;
+    @FXML
+    private TextArea textAreaB2;
 
-    @FXML private TextArea textAreaA;
-    @FXML private TextArea textAreaA1;
-    @FXML private TextArea textAreaB1;
-    @FXML private TextArea textAreaC1;
-    @FXML private TextArea textAreaA2;
-    @FXML private TextArea textAreaB2;
-
-    public void start() throws InterruptedException, ExecutionException, IOException {
-        log.info("Started...");
-        long start = System.currentTimeMillis();
-        float x = 0.0F;
-        if(remote.isSelected()) {
-            System.out.println("\tClient is starting...");
-            Client myClient = new Client(address.getText(), host.getText(), Integer.parseInt(port.getText()));    //Запускаю клієнт
-            Compute compute = new Compute(this, Integer.parseInt(textFieldN.getText()));
-            start = System.currentTimeMillis();
-            x = Client.calculate(myClient, compute);
+    public void start() {
+        try {
+            log.info("Started...");
+            long start = System.currentTimeMillis();
+            float x = 0.0F;
+            if (remote.isSelected()) {
+                try {
+                    ClientCallable createClient = () -> new Client(address.getText(), host.getText(), Integer.parseInt(port.getText()));
+                    FutureTask<Client> client = new FutureTask<>(createClient);
+                    new Thread(client).start();
+                    Compute compute = new Compute(this, Integer.parseInt(textFieldN.getText()));
+                    Client myClient = client.get();
+                    connectionStatus.setTextFill(Paint.valueOf("GREEN"));
+                    connectionStatus.setText("Connected...");
+                    start = System.currentTimeMillis();
+                    x = Client.calculate(myClient, compute);
+                    connectionStatus.setText("Done");
+                } catch (ExecutionException exe) {
+                    Platform.runLater(() -> {
+                        connectionStatus.setTextFill(Paint.valueOf("RED"));
+                        connectionStatus.setText(exe.getCause().getMessage());
+                    });
+                }
+            }
+            if (multithreading.isSelected()) {
+                x = ThreadBasedComputing.calculate(this, Integer.parseInt(textFieldN.getText()));
+            }
+            if (oneThread.isSelected()) {
+                x = OneThreadBasedComputing.calculate(this, Integer.parseInt(textFieldN.getText()));
+            }
+            result.setText(String.valueOf(x));
+            long end = System.currentTimeMillis() - start;
+            time.setText(end + " ms.");
+            log.info("Finished in " + end + "ms.");
+            setOnLog();
+        } catch (NumberFormatException | IOException | InterruptedException | ExecutionException e) {
+            textFieldN.requestFocus();
         }
-        if (multithreading.isSelected()) {
-            x = ThreadBasedComputing.calculate(this, Integer.parseInt(textFieldN.getText()));
-        }
-        if (oneThread.isSelected()) {
-            x = OneThreadBasedComputing.calculate(this, Integer.parseInt(textFieldN.getText()));
-        }
-        result.setText(String.valueOf(x));
-        long end = System.currentTimeMillis() - start;
-        time.setText(end + " ms.");
-        log.info("Finished in " + end + "ms.");
-        setOnLog();
+
     }
 
     private void setOnLog() throws IOException {
@@ -208,7 +251,7 @@ public class ComputerController {
         return remotePane;
     }
 
-    public void showPane(){
+    public void showPane() {
         remotePane.setVisible(remote.isSelected());
     }
 }
