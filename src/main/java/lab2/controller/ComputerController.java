@@ -3,6 +3,7 @@ package lab2.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import lab2.model.Compute;
 import lab2.service.LoadTextService;
 import lab2.service.OneThreadBasedComputing;
 import lab2.service.RandomNumbersService;
@@ -49,7 +50,11 @@ public class ComputerController {
         long start = System.currentTimeMillis();
         float x = 0.0F;
         if(remote.isSelected()) {
-            x = Client.calculate(this, Integer.parseInt(textFieldN.getText()), address.getText(), host.getText(), Integer.parseInt(port.getText()));
+            System.out.println("\tClient is starting...");
+            Client myClient = new Client(address.getText(), host.getText(), Integer.parseInt(port.getText()));    //Запускаю клієнт
+            Compute compute = new Compute(this, Integer.parseInt(textFieldN.getText()));
+            start = System.currentTimeMillis();
+            x = Client.calculate(myClient, compute);
         }
         if (multithreading.isSelected()) {
             x = ThreadBasedComputing.calculate(this, Integer.parseInt(textFieldN.getText()));

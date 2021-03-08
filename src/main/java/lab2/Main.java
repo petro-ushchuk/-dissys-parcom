@@ -39,9 +39,9 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws RemoteException {
-        Thread t =  new Thread(() -> Host.main(new String[]{"host", "8080"}));
-        t.setDaemon(true);
-        t.start();
+//        Thread t =  new Thread(() -> Host.main(new String[]{"host", "8080"}));
+//        t.setDaemon(true);
+//        t.start();
         FileHandler fh;
         try {
             InputStream stream = Main.class.getClassLoader().
