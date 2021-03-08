@@ -58,7 +58,19 @@ public class Client {
             return null;
         });
         CompletableFuture<float[][]> y3 = b2.thenCombine(c2, Compute::staticB224c2).thenCombine(a2, Compute::staticMatrxMultMatrx);
-        CompletableFuture<float[]> y2 = b1.thenCombine(c1, Compute::staticB124C1).thenCombine(a1, (bk, ak) -> Compute.calculateMatrixMultVector(ak, bk));
+//        CompletableFuture<float[]> y2 = b1.thenCombine(c1, Compute::staticB124C1).thenCombine(a1, (bk, ak) -> Compute.calculateMatrixMultVector(ak, bk));
+
+
+        CompletableFuture<float[]> y2 = CompletableFuture.supplyAsync(() ->{
+            try {
+                return myClient.remotingBrain.calculateY2(b1.get(), c1.get(), a1.get());
+            } catch (RemoteException | ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
+
+
         CompletableFuture<float[]> right = CompletableFuture.supplyAsync(()->{
             try {
                 return myClient.remotingBrain.calculateRight(y1.get(), y2.get(), y3.get());

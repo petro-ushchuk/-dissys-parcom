@@ -9,6 +9,8 @@ public interface Brain extends Remote {
 
     float[] calculateY1(float[][] a, float[] b) throws RemoteException;
 
+    float[] calculateY2(float[] b1, float[] c1, float[][]a1) throws RemoteException;
+
     float[][] calculateC2(int n) throws RemoteException;
 
     float[] calculateRight(float[] y1, float[] y2, float[][] y3) throws RemoteException;

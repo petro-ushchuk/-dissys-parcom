@@ -24,6 +24,11 @@ public class BrainImpl extends UnicastRemoteObject implements Brain {
     }
 
     @Override
+    public float[] calculateY2(float[] b1, float[] c1, float[][] a1) throws RemoteException {
+        return calculateMatrixMultVector(a1, staticB124C1(b1,c1));
+    }
+
+    @Override
     public float[][] calculateC2(int n) throws RemoteException {
         float [][] c2 = new float[n][n];
         return getC2(n, c2);

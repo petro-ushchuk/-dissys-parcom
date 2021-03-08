@@ -18,7 +18,7 @@ public class Host {
             System.out.println("Host is starting ...");
             Registry reg = LocateRegistry.createRegistry(port);
             reg.rebind(name, new BrainImpl());
-            System.out.println("Host " + name + " started successfully");
+            System.out.println("Host " + name + ":" + port + " started successfully");
             System.out.println("Press [Enter] to stop the Host");
             new Scanner(System.in).nextLine();
             System.out.println("Server stopped...");
