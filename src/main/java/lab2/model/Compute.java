@@ -44,16 +44,13 @@ public class Compute implements Serializable {
         this.n = n;
         a = new float[n][n];
         b = new float[n];
-        y1 = new float[n];
         a1 = new float[n][n];
         b1 = new float[n];
         c1 = new float[n];
-        y2 = new float[n];
         a2 = new float[n][n];
         b2 = new float[n][n];
         c2 = new float[n][n];
         y3 = new float[n][n];
-        left = new float[n];
         right = new float[n];
         controller = computerController;
     }
@@ -80,21 +77,22 @@ public class Compute implements Serializable {
     }
 
     public float[] calculateY1() {
-        calculateMatrixMultVector(a, b, y1);
+        y1 = calculateMatrixMultVector(a, b);
 //        log.info("y1: " + Arrays.toString(y1));
         return y1;
     }
 
-    public float[] calculateMatrixMultVector(float[][] matrix, float[] vector, float[] result) {
-        for (int i = 0; i < n; i++) {
+    public static float[] calculateMatrixMultVector(float[][] matrix, float[] vector) {
+        float[] result = new float[matrix.length];
+        for (int i = 0; i < vector.length; i++) {
             result[i] = multTwoVectors(matrix[i], vector);
         }
         return result;
     }
 
-    public Float multTwoVectors(float[] matrixRow, float[] vector) {
+    public static float multTwoVectors(float[] matrixRow, float[] vector) {
         float sum = 0.0F;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < vector.length; i++) {
             sum += matrixRow[i] * vector[i];
         }
         return sum;
@@ -102,30 +100,40 @@ public class Compute implements Serializable {
 
 
     public float[] calculateY2() {
-        calculateMatrixMultVector(a1, b1minus24c1, y2);
+        y2 = calculateMatrixMultVector(a1, b1minus24c1);
 //        log.info("y2: " + Arrays.toString(y2));
         return y2;
     }
 
     public float[][] B2plus24C2T() {
+        float[][] matrix = staticB224c2(b2, c2);
+        b2plus24c2t = matrix;
+//        log.info("B2+24*C2: " + Arrays.deepToString(matrix));
+        return matrix;
+    }
+
+    public static float[][] staticB224c2(float [][] b2, float [][] c2) {
+        int n = b2.length;
         float[][] matrix = new float[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 matrix[j][i] = b2[i][j] + 24 * c2[i][j];
             }
         }
-        b2plus24c2t = matrix;
-//        log.info("B2+24*C2: " + Arrays.deepToString(matrix));
         return matrix;
     }
 
     public float[] b1Minus24C1() {
-        float[] vector = new float[n];
-        for (int i = 0; i < n; i++) {
+        b1minus24c1 = staticB124C1(b1, c1);
+        //        log.info("b1-24*c1: " + Arrays.toString(vector));
+        return b1minus24c1;
+    }
+
+    public static float[] staticB124C1(float [] b1, float[] c1) {
+        float[] vector = new float[b1.length];
+        for (int i = 0; i < b1.length; i++) {
             vector[i] = b1[i] - 24 * c1[i];
         }
-        b1minus24c1 = vector;
-//        log.info("b1-24*c1: " + Arrays.toString(vector));
         return vector;
     }
 
@@ -135,9 +143,13 @@ public class Compute implements Serializable {
         return y3;
     }
 
-    private float[][] calculateMatrixMultMatrix(float[][] left, float[][] right, float[][] result) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+    public static float[][] staticMatrxMultMatrx(float[][] left, float[][] right) {
+        return calculateMatrixMultMatrix(right, left, new float[left.length][left.length]);
+    }
+
+    public static float[][] calculateMatrixMultMatrix(float[][] left, float[][] right, float[][] result) {
+        for (int i = 0; i < left.length; i++) {
+            for (int j = 0; j < left.length; j++) {
                 result[i][j] = multTwoVectors(left[i], right[j]);
             }
         }
@@ -146,18 +158,24 @@ public class Compute implements Serializable {
 
 
     public float[] calculateY2Y3Y3y1PlusY1() {
-        float[] matrix = left;
         float[] y2y3 = calculateVectorMultMatrix(y2, y3);
         float[] y2y3y3 = calculateVectorMultMatrix(y2y3, y3);
         float y2y3y3y1 = multTwoVectors(y2y3y3, y1);
-        for (int i = 0; i < n; i++) {
-            matrix[i] = y2y3y3y1 + y1[i];
-        }
+        left = vectorAddNumber(y2y3y3y1, y1);
 //        log.info("y2Y3^2y1+y1': " + Arrays.toString(matrix));
-        return matrix;
+        return left;
     }
 
-    private float[] calculateVectorMultMatrix(float[] vector, float[][] matrix) {
+    public static float[] vectorAddNumber(float y2y3y3y1, float[] matrix) {
+        float [] result = new float[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            result[i] = y2y3y3y1 + matrix[i];
+        }
+        return result;
+    }
+
+    public static float[] calculateVectorMultMatrix(float[] vector, float[][] matrix) {
+        int n = vector.length;
         float[] result = new float[n];
         for (int i = 0; i < n; i++) {
             float sum = 0.0F;
@@ -170,12 +188,17 @@ public class Compute implements Serializable {
     }
 
     public float[] calculateY3Y1plusY2() {
-        float [] vector = right;
-        float[] y3y1 = calculateMatrixMultVector(y3, y1, new float[n]);
-        for (int i = 0; i < n; i++) {
+        float[] y3y1 = calculateMatrixMultVector(y3, y1);
+        right = vectorAddVector(y2, y3y1);
+//        log.info("Y3y1+y2': " + Arrays.toString(vector));
+        return right;
+    }
+
+    public static float[] vectorAddVector(float[] y2, float[] y3y1) {
+        float [] vector = new float[y2.length];
+        for (int i = 0; i < y2.length; i++) {
             vector[i] = y3y1[i] + y2[i];
         }
-//        log.info("Y3y1+y2': " + Arrays.toString(vector));
         return vector;
     }
 
@@ -185,11 +208,11 @@ public class Compute implements Serializable {
     }
 
     public float[][] calculateB2() {
-        return textAreaToMatrix(controller.getTextAreaB2(), b2, "B2");
+        return textAreaToMatrix(controller.getTextAreaB2(), b2);
     }
 
-    private float[][] textAreaToMatrix(TextArea textAreaB2, float[][] matrix, String matrixName) {
-        String text = LoadTextService.read(textAreaB2);
+    private float[][] textAreaToMatrix(TextArea textAreaB2, float[][] matrix) {
+        String text = textAreaB2.getText();
         String[] numbers = text.split("[\\s\n]+");
         int k = 0;
         for (int i = 0; i < n; i++) {
@@ -201,8 +224,8 @@ public class Compute implements Serializable {
         return matrix;
     }
 
-    private float[] textAreaToVector(TextArea textAreaB2, float[] vector, String vectorName) {
-        String text = LoadTextService.read(textAreaB2);
+    private float[] textAreaToVector(TextArea textAreaB2, float[] vector) {
+        String text = textAreaB2.getText();
         String[] numbers = text.split("[\\s\n]+");
         int k = 0;
         for (int i = 0; i < n; i++) {
@@ -214,24 +237,26 @@ public class Compute implements Serializable {
 
 
     public float[][] calculateA2() {
-        return textAreaToMatrix(controller.getTextAreaA2(), a2, "A2");
+        return textAreaToMatrix(controller.getTextAreaA2(), a2);
     }
 
     public float[] calculateB1() {
-        return textAreaToVector(controller.getTextAreaB1(), b1, "b1");
+        return textAreaToVector(controller.getTextAreaB1(), b1);
     }
 
     public float[] calculateC1() {
-        return textAreaToVector(controller.getTextAreaC1(), c1, "c1");
+        return textAreaToVector(controller.getTextAreaC1(), c1);
     }
 
     public float[][] calculateA1() {
-        return textAreaToMatrix(controller.getTextAreaA1(), a1, "A1");
+        return textAreaToMatrix(controller.getTextAreaA1(), a1);
     }
 
     public float[][] calculateA() {
-        return textAreaToMatrix(controller.getTextAreaA(), a, "A");
+        return textAreaToMatrix(controller.getTextAreaA(), a);
     }
 
-
+    public int getN() {
+        return n;
+    }
 }

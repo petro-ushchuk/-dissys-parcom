@@ -1,16 +1,15 @@
 package lab4;
 
-import lab2.model.Compute;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface Brain extends Remote{
+public interface Brain extends Remote {
 
-    float[] calculateLeft(Compute compute) throws RemoteException;
-    float[] calculateY1(Compute compute) throws RemoteException;
-    float[] calculateB(Compute compute) throws RemoteException;
-    float[] calculateC2(Compute compute) throws RemoteException;
-    float[] calculateY2(Compute compute) throws RemoteException;
-    float [] calculateB1C1(Compute compute) throws RemoteException;
+    float[] calculateB(int n) throws RemoteException;
+
+    float[] calculateY1(float[][] a, float[] b) throws RemoteException;
+
+    float[][] calculateC2(int n) throws RemoteException;
+
+    float[] calculateRight(float[] y1, float[] y2, float[][] y3) throws RemoteException;
 }
