@@ -80,7 +80,7 @@ public class Client {
 
         CompletableFuture<float[]> right = CompletableFuture.supplyAsync(() -> {
             try {
-                return myClient.remotingBrain.calculateRight(y1.get(), y2.get(), y3.get());
+                return myClient.remotingBrain.calculateRight(y2.get());
             } catch (RemoteException | InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

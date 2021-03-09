@@ -20,25 +20,25 @@ public class Compute implements Serializable {
 
     private transient volatile ComputerController controller;
 
-
     public Compute(ComputerController computerController, int n) {
         this.n = n;
-        a = new float[n][n];
-        b = new float[n];
-        a1 = new float[n][n];
-        b1 = new float[n];
-        c1 = new float[n];
-        a2 = new float[n][n];
-        b2 = new float[n][n];
-        c2 = new float[n][n];
+//        a = new float[n][n];
+//        b = new float[n];
+//        a1 = new float[n][n];
+//        b1 = new float[n];
+//        c1 = new float[n];
+//        a2 = new float[n][n];
+//        b2 = new float[n][n];
+//        c2 = new float[n][n];
         controller = computerController;
     }
 
     public float[] calculateB() {
-        return getB(n, b);
+        return getB(n);
     }
 
-    public static float[] getB(int n, float[] b) {
+    public static float[] getB(int n) {
+        float[] b = new float[n];
         for (int i = 0; i < n; i += 2) {
             b[i] = 24.0F / ((i + 1) * (i + 1) + 4);
         }
@@ -49,10 +49,11 @@ public class Compute implements Serializable {
     }
 
     public float[][] calculateC2() {
-        return getC2(n, c2);
+        return getC2(n);
     }
 
-    public static float[][] getC2(int n, float[][] c2) {
+    public static float[][] getC2(int n) {
+        float[][] c2 = new float[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 c2[i][j] = 24.0F / ((i + 1) + 3 * (j + 1) * (j + 1));
@@ -139,51 +140,49 @@ public class Compute implements Serializable {
     }
 
     public float[][] calculateB2() {
-        return textAreaToMatrix(controller.getTextAreaB2(), b2);
+        return textAreaToMatrix(controller.getTextAreaB2(), n);
     }
 
     public float[][] calculateA2() {
-        return textAreaToMatrix(controller.getTextAreaA2(), a2);
+        return textAreaToMatrix(controller.getTextAreaA2(), n);
     }
 
     public float[] calculateB1() {
-        return textAreaToVector(controller.getTextAreaB1(), b1);
+        return textAreaToVector(controller.getTextAreaB1(), n );
     }
 
     public float[] calculateC1() {
-        return textAreaToVector(controller.getTextAreaC1(), c1);
+        return textAreaToVector(controller.getTextAreaC1(), n);
     }
 
     public float[][] calculateA1() {
-        return textAreaToMatrix(controller.getTextAreaA1(), a1);
+        return textAreaToMatrix(controller.getTextAreaA1(), n);
     }
 
     public float[][] calculateA() {
-        return textAreaToMatrix(controller.getTextAreaA(), a);
+        return textAreaToMatrix(controller.getTextAreaA(), n);
     }
 
-    private static float[][] textAreaToMatrix(TextArea textAreaB2, float[][] matrix) {
+    private static float[][] textAreaToMatrix(TextArea textAreaB2, int n) {
+        float[][] matrix = new float[n][n];
         String text = textAreaB2.getText();
         String[] numbers = text.split("[\\s\n]+");
         int k = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 matrix[i][j] = Float.parseFloat(numbers[k++]);
             }
         }
         return matrix;
     }
 
-    private static float[] textAreaToVector(TextArea textAreaB2, float[] vector) {
+    private static float[] textAreaToVector(TextArea textAreaB2, int n) {
+        float[] vector = new float[n];
         String text = textAreaB2.getText();
         String[] numbers = text.split("[\\s\n]+");
-        for (int i = 0; i < vector.length; i++) {
+        for (int i = 0; i < n; i++) {
             vector[i] = Float.parseFloat(numbers[i]);
         }
         return vector;
-    }
-
-    public int getN() {
-        return n;
     }
 }

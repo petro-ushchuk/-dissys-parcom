@@ -13,7 +13,7 @@ public interface Brain extends Remote {
 
     float[][] calculateC2(int n) throws RemoteException;
 
-    float[] calculateRight(float[] y1, float[] y2, float[][] y3) throws RemoteException;
+    float[] calculateRight(float[] y2) throws RemoteException;
 
     float[][] calculateY3(float[][] b2, float[][] a2) throws RemoteException;
 }

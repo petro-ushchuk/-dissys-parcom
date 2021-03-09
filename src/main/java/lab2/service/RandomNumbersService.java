@@ -14,7 +14,6 @@ public class RandomNumbersService {
             for (int j = 0; j < matrix.length; j++) {
                 matrix[i][j] = rand.nextInt(10);
             }
-
         }
         return asString(matrix);
     }
