@@ -5,8 +5,7 @@ import lab4.Brain;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import static lab2.model.Compute.*;
-import static lab2.model.Compute.calculateMatrixMultVector;
+import static lab4.host.ComputeHost.*;
 
 
 public class BrainImpl extends UnicastRemoteObject implements Brain {

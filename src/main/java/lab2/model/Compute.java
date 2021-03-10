@@ -9,27 +9,11 @@ import java.io.Serializable;
 
 public class Compute implements Serializable {
     private int n;
-    private float[][] a;
-    private float[] b;
-    private float[][] a1;
-    private float[] b1;
-    private float[] c1;
-    private float[][] a2;
-    private float[][] b2;
-    private float[][] c2;
 
     private transient volatile ComputerController controller;
 
     public Compute(ComputerController computerController, int n) {
         this.n = n;
-//        a = new float[n][n];
-//        b = new float[n];
-//        a1 = new float[n][n];
-//        b1 = new float[n];
-//        c1 = new float[n];
-//        a2 = new float[n][n];
-//        b2 = new float[n][n];
-//        c2 = new float[n][n];
         controller = computerController;
     }
 
