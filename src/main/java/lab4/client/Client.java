@@ -1,9 +1,8 @@
 package lab4.client;
 
+import host.Brain;
 import lab2.model.Compute;
-import lab4.Brain;
 import lab4.exception.BadConnectionException;
-
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -18,27 +17,15 @@ public class Client {
         try {
             remotingBrain = (Brain) Naming.lookup("//" + address + ":" + port + "/" + name);
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
+            e.printStackTrace();
             throw new BadConnectionException("Can't connect to this adress");
         }
         System.out.println("Connection to " + address + ":" + port + "/" + name + " is succeed");
     }
 
-    public static float calculate(Client myClient, Compute compute) throws ExecutionException, InterruptedException {
-//        CompletableFuture<float[][]> c2 = CompletableFuture.supplyAsync(() -> {
-//            try {
-//                return myClient.remotingBrain.calculateC2(compute.getN());
-//            } catch (RemoteException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        });
-
+    public static float calculate(Client myClient, Compute compute, long start) throws ExecutionException, InterruptedException {
         CompletableFuture<float[][]> b2 = CompletableFuture.supplyAsync(compute::calculateB2);
         CompletableFuture<float[][]> a2 = CompletableFuture.supplyAsync(compute::calculateA2);
-
-//        CompletableFuture<float[][]> y3 = b2.thenCombine(c2, Compute::staticB224c2).thenCombine(a2, Compute::staticMatrxMultMatrx);
-
-
         CompletableFuture<float[][]> y3 = CompletableFuture.supplyAsync(() -> {
             try {
                 return myClient.remotingBrain.calculateY3(b2.get(), a2.get());
@@ -47,10 +34,7 @@ public class Client {
             }
             return null;
         });
-
-
         CompletableFuture<float[][]> a = CompletableFuture.supplyAsync(compute::calculateA);
-
         CompletableFuture<float[]> y1 = a.thenApply((ak) -> {
             try {
                 return myClient.remotingBrain.calculateY1(ak);
@@ -59,25 +43,10 @@ public class Client {
             }
             return null;
         });
-
-
         CompletableFuture<float[]> b1 = CompletableFuture.supplyAsync(compute::calculateB1);
         CompletableFuture<float[]> c1 = CompletableFuture.supplyAsync(compute::calculateC1);
         CompletableFuture<float[][]> a1 = CompletableFuture.supplyAsync(compute::calculateA1);
-
         CompletableFuture<float[]> y2 = b1.thenCombine(c1, Compute::staticB124C1).thenCombine(a1, (bk, ak) -> Compute.calculateMatrixMultVector(ak, bk));
-
-
-//        CompletableFuture<float[]> y2 = CompletableFuture.supplyAsync(() ->{
-//            try {
-//                return myClient.remotingBrain.calculateY2(b1.get(), c1.get(), a1.get());
-//            } catch (RemoteException | ExecutionException | InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        });
-
-
         CompletableFuture<float[]> right = CompletableFuture.supplyAsync(() -> {
             try {
                 y1.join();

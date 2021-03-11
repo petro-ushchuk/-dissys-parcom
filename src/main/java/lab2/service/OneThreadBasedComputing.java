@@ -3,7 +3,6 @@ package lab2.service;
 import lab2.controller.ComputerController;
 import lab2.model.Compute;
 
-import java.util.concurrent.CompletableFuture;
 
 public class OneThreadBasedComputing {
     public static Float calculate(ComputerController computerController, int n){

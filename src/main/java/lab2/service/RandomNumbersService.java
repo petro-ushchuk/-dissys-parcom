@@ -18,6 +18,8 @@ public class RandomNumbersService {
         return asString(matrix);
     }
 
+
+
     public String generateVector(int n) {
         float[] vector = new float[n];
         for (int i = 0; i < vector.length; i++) {
